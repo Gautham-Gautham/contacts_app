@@ -83,7 +83,7 @@ class _SkTextFieldState extends State<CustomTextField> {
               floatingLabelStyle: GoogleFonts.poppins(
                   color: widget.isError
                       ? const Color.fromRGBO(230, 57, 70, 1)
-                      : Colors.purple.shade400,
+                      : Colors.black,
                   fontWeight: FontWeight.w400),
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -107,7 +107,7 @@ class _SkTextFieldState extends State<CustomTextField> {
                 borderSide: BorderSide(
                   color: widget.isError
                       ? const Color.fromRGBO(230, 57, 70, 1)
-                      : Colors.purple.shade400,
+                      : Colors.black,
                   width: 2.0,
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(12.0)),
@@ -119,7 +119,7 @@ class _SkTextFieldState extends State<CustomTextField> {
                         passwordHidden
                             ? Icons.visibility
                             : Icons.visibility_off,
-                        color: Colors.purple.shade400,
+                        color: Colors.black,
                       ),
                       onPressed: () {
                         setState(() {
