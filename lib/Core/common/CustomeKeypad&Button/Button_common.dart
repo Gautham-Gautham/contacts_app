@@ -5,13 +5,15 @@ import '../../../Features/Authentication/Screens/login.dart';
 
 class CommonButton extends StatelessWidget {
   final String buttonName;
-  const CommonButton({super.key, required this.buttonName});
+  final Function ontap;
+  const CommonButton(
+      {super.key, required this.buttonName, required this.ontap});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () => ontap,
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,
               minimumSize: Size(width * 0.8, height * 0.06)),
