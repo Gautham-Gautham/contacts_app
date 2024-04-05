@@ -6,7 +6,7 @@ import '../Provider/login_model.dart';
 
 class LoginProvider extends ChangeNotifier {
   final LoginModel _model = LoginModel();
-
+  String otp = '';
   LoginModel get model => _model;
 
   void navigateToOtpScreen(BuildContext context) {

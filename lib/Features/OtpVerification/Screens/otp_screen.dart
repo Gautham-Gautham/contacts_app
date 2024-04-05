@@ -4,6 +4,7 @@ import 'package:contacts_app/Core/common/CustomeKeypad&Button/key_pad.dart';
 import 'package:contacts_app/Core/custom_textform_field/custom_textform.dart';
 import 'package:contacts_app/Features/Authentication/Screens/login.dart';
 import 'package:contacts_app/Features/OtpVerification/Providers/otp_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +12,8 @@ import 'package:flutterotpfield/flutterotpfield.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
+
+import '../../Authentication/Provider/login_provider.dart';
 
 class OtpScreen extends StatefulWidget {
   final String number;
@@ -48,6 +51,7 @@ class _OtpScreenState extends State<OtpScreen> {
               width: width,
               child: Consumer<OtpProvider>(
                 builder: (context, value, child) {
+                  final provider = Provider.of<LoginProvider>(context);
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,12 +140,20 @@ class _OtpScreenState extends State<OtpScreen> {
                                 controller: value.otpModel.fth,
                                 onCompleted: (v) {
                                   print("Completed");
+                                  print("Completed");
+                                  print("Completed");
+                                  print("Completed");
+                                  print("Completed");
+                                  print("Completed");
+                                  print("Completed");
+                                  print("Completed");
+                                  print("Completed");
+                                  print("Completed");
+                                  print(v);
+                                  print("Completed");
+                                  value.currentText = v;
                                 },
-                                onChanged: (value1) {
-                                  print(value1);
-
-                                  value.currentText = value1;
-                                },
+                                onChanged: (value1) {},
                                 beforeTextPaste: (text) {
                                   print("Allowing to paste $text");
                                   //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
@@ -195,8 +207,20 @@ class _OtpScreenState extends State<OtpScreen> {
                       ),
                       Center(
                         child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               // navigat();
+                              PhoneAuthCredential credential =
+                                  await PhoneAuthProvider.credential(
+                                      verificationId: provider.otp,
+                                      smsCode: value.currentText.toString());
+                              FirebaseAuth.instance
+                                  .signInWithCredential(credential)
+                                  .then(
+                                (value) {
+                                  print(value.user!.phoneNumber);
+                                  print(value.user!.uid);
+                                },
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.black,

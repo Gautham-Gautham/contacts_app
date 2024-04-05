@@ -107,14 +107,19 @@ class LoginScreen extends StatelessWidget {
                   ),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () {
-                        FirebaseAuth.instance.verifyPhoneNumber(
-                          verificationCompleted: (phoneAuthCredential) {},
-                          verificationFailed: (error) {},
-                          codeSent: (verificationId, forceResendingToken) {},
-                          codeAutoRetrievalTimeout: (verificationId) {},
-                        );
-                        provider.navigateToOtpScreen(context);
+                      onPressed: () async {
+                        await FirebaseAuth.instance.verifyPhoneNumber(
+                            verificationCompleted: (phoneAuthCredential) {},
+                            verificationFailed: (error) {},
+                            codeSent: (verificationId, forceResendingToken) {
+                              provider.navigateToOtpScreen(context);
+                              provider.otp = verificationId;
+                            },
+                            codeAutoRetrievalTimeout: (verificationId) {},
+                            phoneNumber:
+                                "+91${provider.model.phoneNumber.text}");
+
+                        // provider.navigateToOtpScreen(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
