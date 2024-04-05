@@ -1,5 +1,7 @@
 import 'package:contacts_app/Features/Authentication/Provider/login_model.dart';
 import 'package:contacts_app/Features/Authentication/Screens/login.dart';
+import 'package:contacts_app/Features/HomeScreen/Provider/home_model.dart';
+import 'package:contacts_app/Features/HomeScreen/Provider/home_provider.dart';
 import 'package:contacts_app/Features/HomeScreen/Screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +38,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => OtpProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HomeModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HomeProvider(),
         ),
       ],
       child: MaterialApp(

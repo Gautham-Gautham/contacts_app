@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_app/Features/Authentication/Screens/login.dart';
+import 'package:contacts_app/Models/userModel.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +89,24 @@ class _CreateUserState extends State<CreateUser> {
       setState(() {});
     }
     Navigator.of(context).pop();
+  }
+
+  setSearchParam(String caseNumber) {
+    List<String> caseSearchList = [];
+    String temp = "";
+    List<String> nameSplits = caseNumber.split(" ");
+    for (int i = 0; i < nameSplits.length; i++) {
+      String name = "";
+      for (int k = i; k < nameSplits.length; k++) {
+        name = name + nameSplits[k] + " ";
+      }
+      temp = "";
+      for (int j = 0; j < name.length; j++) {
+        temp = temp + name[j];
+        caseSearchList.add(temp.toUpperCase());
+      }
+    }
+    return caseSearchList;
   }
 
   @override
@@ -191,8 +210,21 @@ class _CreateUserState extends State<CreateUser> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),
                       onPressed: () {
-                        FirebaseFirestore.instance.collection("name").add(
-                            {"name": name.text, "phone": number.text.trim()});
+                        final dta = UserModel(
+                            name: name.text.trim(),
+                            image: downloadImageUrl,
+                            age: int.parse(number.text.trim()),
+                            search: setSearchParam(name.text.trim()));
+                        FirebaseFirestore.instance
+                            .collection("name")
+                            .add(dta.toMap())
+                            .then(
+                          (value) {
+                            name.clear();
+                            number.clear();
+                            downloadImageUrl = '';
+                          },
+                        );
                       },
                       child: Text(
                         "Save",
