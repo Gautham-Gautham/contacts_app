@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_app/Features/Authentication/Screens/login.dart';
+import 'package:contacts_app/Features/CreateUser/Provider/create_user_provider.dart';
 import 'package:contacts_app/Models/userModel.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../../Core/custom_textform_field/custom_textform.dart';
 
@@ -19,77 +21,77 @@ class CreateUser extends StatefulWidget {
 }
 
 class _CreateUserState extends State<CreateUser> {
-  TextEditingController name = TextEditingController();
-  TextEditingController number = TextEditingController();
-  String downloadImageUrl = '';
-  final picker = ImagePicker();
-  Future<void> _showImagePickerDialog() async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Choose an option"),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                GestureDetector(
-                  onTap: _getImageFromGallery,
-                  child: const Text("Gallery"),
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: _getImageFromCamera,
-                  child: const Text("Camera"),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  PickedFile? imgFile;
-  Future<void> _getImageFromGallery() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      // ref
-      //     .watch(imageProvider.notifier)
-      //     .update((state) => File(pickedFile.path));
-      // showSnackBar(context, 'Uploading File.......');
-      var uploadTask = FirebaseStorage.instance
-          .ref('images/image-${DateTime.now()}')
-          .putFile(File(pickedFile.path));
-      final snapshot = await uploadTask.whenComplete(() {});
-      downloadImageUrl = await snapshot.ref.getDownloadURL();
-
-      // showSnackBar(context, 'Uploaded Successfully...');
-
-      setState(() {});
-    }
-    Navigator.of(context).pop();
-  }
-
-  Future<void> _getImageFromCamera() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
-
-    if (pickedFile != null) {
-      // ref
-      //     .watch(imageProvider.notifier)
-      //     .update((state) => File(pickedFile.path));
-      // showSnackBar(context, 'Uploading File.......');
-      var uploadTask = FirebaseStorage.instance
-          .ref('images/image-${DateTime.now()}')
-          .putFile(File(pickedFile.path));
-      final snapshot = await uploadTask.whenComplete(() {});
-      downloadImageUrl = await snapshot.ref.getDownloadURL();
-
-      // showSnackBar(context, 'Uploaded Successfully...');
-
-      setState(() {});
-    }
-    Navigator.of(context).pop();
-  }
+  // TextEditingController name = TextEditingController();
+  // TextEditingController number = TextEditingController();
+  // String downloadImageUrl = '';
+  // final picker = ImagePicker();
+  // Future<void> _showImagePickerDialog() async {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text("Choose an option"),
+  //         content: SingleChildScrollView(
+  //           child: ListBody(
+  //             children: [
+  //               GestureDetector(
+  //                 onTap: _getImageFromGallery,
+  //                 child: const Text("Gallery"),
+  //               ),
+  //               const SizedBox(height: 20),
+  //               GestureDetector(
+  //                 onTap: _getImageFromCamera,
+  //                 child: const Text("Camera"),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+  //
+  // PickedFile? imgFile;
+  // Future<void> _getImageFromGallery() async {
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  //   if (pickedFile != null) {
+  //     // ref
+  //     //     .watch(imageProvider.notifier)
+  //     //     .update((state) => File(pickedFile.path));
+  //     // showSnackBar(context, 'Uploading File.......');
+  //     var uploadTask = FirebaseStorage.instance
+  //         .ref('images/image-${DateTime.now()}')
+  //         .putFile(File(pickedFile.path));
+  //     final snapshot = await uploadTask.whenComplete(() {});
+  //     downloadImageUrl = await snapshot.ref.getDownloadURL();
+  //
+  //     // showSnackBar(context, 'Uploaded Successfully...');
+  //
+  //     setState(() {});
+  //   }
+  //   Navigator.of(context).pop();
+  // }
+  //
+  // Future<void> _getImageFromCamera() async {
+  //   final pickedFile = await picker.pickImage(source: ImageSource.camera);
+  //
+  //   if (pickedFile != null) {
+  //     // ref
+  //     //     .watch(imageProvider.notifier)
+  //     //     .update((state) => File(pickedFile.path));
+  //     // showSnackBar(context, 'Uploading File.......');
+  //     var uploadTask = FirebaseStorage.instance
+  //         .ref('images/image-${DateTime.now()}')
+  //         .putFile(File(pickedFile.path));
+  //     final snapshot = await uploadTask.whenComplete(() {});
+  //     downloadImageUrl = await snapshot.ref.getDownloadURL();
+  //
+  //     // showSnackBar(context, 'Uploaded Successfully...');
+  //
+  //     setState(() {});
+  //   }
+  //   Navigator.of(context).pop();
+  // }
 
   setSearchParam(String caseNumber) {
     List<String> caseSearchList = [];
@@ -111,6 +113,7 @@ class _CreateUserState extends State<CreateUser> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<CreateUserProvider>(context);
     return AlertDialog(
       backgroundColor: Colors.white,
       title: SizedBox(
@@ -132,7 +135,7 @@ class _CreateUserState extends State<CreateUser> {
             children: [
               Stack(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     backgroundColor: Colors.transparent,
                     radius: 55,
                     child: CircleAvatar(
@@ -145,16 +148,16 @@ class _CreateUserState extends State<CreateUser> {
                     child: Container(
                       width: 110,
                       height: 55,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.black45,
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(50),
                               bottomRight: Radius.circular(50))),
                       child: IconButton(
                           onPressed: () {
-                            _showImagePickerDialog();
+                            provider.showImagePickerDialog(context: context);
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.camera_alt,
                             color: Colors.white,
                           )),
@@ -173,7 +176,7 @@ class _CreateUserState extends State<CreateUser> {
                 width: width * 0.85,
                 child: CustomTextField(
                   keyboardType: TextInputType.text,
-                  controller: name,
+                  controller: provider.userModel.name,
                   label: 'Enter Name',
                 ),
               ),
@@ -181,8 +184,8 @@ class _CreateUserState extends State<CreateUser> {
                 width: width * 0.85,
                 child: CustomTextField(
                   keyboardType: TextInputType.number,
-                  controller: number,
-                  label: 'Enter Phone Number',
+                  controller: provider.userModel.number,
+                  label: 'Enter Age',
                 ),
               ),
               Row(
@@ -193,8 +196,8 @@ class _CreateUserState extends State<CreateUser> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),
                       onPressed: () {
-                        name.clear();
-                        number.clear();
+                        provider.userModel.name.clear();
+                        provider.userModel.number.clear();
                         Navigator.pop(context);
                       },
                       child: Text(
@@ -211,18 +214,20 @@ class _CreateUserState extends State<CreateUser> {
                               borderRadius: BorderRadius.circular(10))),
                       onPressed: () {
                         final dta = UserModel(
-                            name: name.text.trim(),
-                            image: downloadImageUrl,
-                            age: int.parse(number.text.trim()),
-                            search: setSearchParam(name.text.trim()));
+                            name: provider.userModel.name.text.trim(),
+                            image: provider.downloadImageUrl,
+                            age: int.parse(
+                                provider.userModel.number.text.trim()),
+                            search: setSearchParam(
+                                provider.userModel.name.text.trim()));
                         FirebaseFirestore.instance
                             .collection("name")
                             .add(dta.toMap())
                             .then(
                           (value) {
-                            name.clear();
-                            number.clear();
-                            downloadImageUrl = '';
+                            provider.userModel.name.clear();
+                            provider.userModel.number.clear();
+                            provider.downloadImageUrl = '';
                           },
                         );
                       },

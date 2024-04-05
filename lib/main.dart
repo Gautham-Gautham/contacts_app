@@ -1,5 +1,7 @@
 import 'package:contacts_app/Features/Authentication/Provider/login_model.dart';
 import 'package:contacts_app/Features/Authentication/Screens/login.dart';
+import 'package:contacts_app/Features/CreateUser/Provider/create_user_model.dart';
+import 'package:contacts_app/Features/CreateUser/Provider/create_user_provider.dart';
 import 'package:contacts_app/Features/HomeScreen/Provider/home_model.dart';
 import 'package:contacts_app/Features/HomeScreen/Provider/home_provider.dart';
 import 'package:contacts_app/Features/HomeScreen/Screens/home_screen.dart';
@@ -13,7 +15,6 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await initializeService();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -44,6 +45,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => HomeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CreateUserModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CreateUserProvider(),
         ),
       ],
       child: MaterialApp(
