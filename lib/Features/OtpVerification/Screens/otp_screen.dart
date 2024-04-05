@@ -8,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutterotpfield/flutterotpfield.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
@@ -139,26 +138,8 @@ class _OtpScreenState extends State<OtpScreen> {
                                 enableActiveFill: true,
                                 controller: value.otpModel.fth,
                                 onCompleted: (v) {
-                                  print("Completed");
-                                  print("Completed");
-                                  print("Completed");
-                                  print("Completed");
-                                  print("Completed");
-                                  print("Completed");
-                                  print("Completed");
-                                  print("Completed");
-                                  print("Completed");
-                                  print("Completed");
                                   print(v);
-                                  print("Completed");
                                   value.currentText = v;
-                                },
-                                onChanged: (value1) {},
-                                beforeTextPaste: (text) {
-                                  print("Allowing to paste $text");
-                                  //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                                  //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                                  return true;
                                 },
                                 appContext: context,
                               ),

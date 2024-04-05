@@ -50,19 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDH89kYwm3_ef9X1FmDzMFWWR8pFZJEhW4',
-    appId: '1:284400538060:android:66071a75e3acd576528d69',
-    messagingSenderId: '284400538060',
-    projectId: 'contactsapp-57885',
-    storageBucket: 'contactsapp-57885.appspot.com',
+    apiKey: 'AIzaSyBxv5Hr5jV8LV6vX4o9sCYIObFDAlIXcHo',
+    appId: '1:707741483847:android:440baa36ec55d417250262',
+    messagingSenderId: '707741483847',
+    projectId: 'gocorona-405f5',
+    storageBucket: 'gocorona-405f5.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCxDNqc6qvY_WI7SGDvlv9NgOdbivfIJhQ',
-    appId: '1:284400538060:ios:a109ae3f65e0a53d528d69',
-    messagingSenderId: '284400538060',
-    projectId: 'contactsapp-57885',
-    storageBucket: 'contactsapp-57885.appspot.com',
+    apiKey: 'AIzaSyCfYxJXkITg4uPwnUqGQ4ux4Ti0fJ_R3dE',
+    appId: '1:707741483847:ios:45afa3b59c2ed833250262',
+    messagingSenderId: '707741483847',
+    projectId: 'gocorona-405f5',
+    storageBucket: 'gocorona-405f5.appspot.com',
+    androidClientId: '707741483847-3ve09jluitr9rc8n58k5c1b07u499d25.apps.googleusercontent.com',
+    iosClientId: '707741483847-4f27kqsb6hggeg38iskpqrqbi8spvrse.apps.googleusercontent.com',
     iosBundleId: 'com.example.contactsApp',
   );
 }

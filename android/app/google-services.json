@@ -1,26 +1,123 @@
 {
   "project_info": {
-    "project_number": "284400538060",
-    "project_id": "contactsapp-57885",
-    "storage_bucket": "contactsapp-57885.appspot.com"
+    "project_number": "707741483847",
+    "project_id": "gocorona-405f5",
+    "storage_bucket": "gocorona-405f5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:284400538060:android:66071a75e3acd576528d69",
+        "mobilesdk_app_id": "1:707741483847:android:440baa36ec55d417250262",
         "android_client_info": {
           "package_name": "com.example.contacts_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "707741483847-rms10ic8mt0ceb1pe3tdseknlttiq9ov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDH89kYwm3_ef9X1FmDzMFWWR8pFZJEhW4"
+          "current_key": "AIzaSyBxv5Hr5jV8LV6vX4o9sCYIObFDAlIXcHo"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707741483847-rms10ic8mt0ceb1pe3tdseknlttiq9ov.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "707741483847-im8r090qp5nn97n2pq2cs136s07td2u3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myPortafolio"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707741483847:android:faffe763a6028b7b250262",
+        "android_client_info": {
+          "package_name": "com.example.go_corona"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707741483847-3ve09jluitr9rc8n58k5c1b07u499d25.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.go_corona",
+            "certificate_hash": "d589359bbb65c012f7bae479153217b836617207"
+          }
+        },
+        {
+          "client_id": "707741483847-rms10ic8mt0ceb1pe3tdseknlttiq9ov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxv5Hr5jV8LV6vX4o9sCYIObFDAlIXcHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707741483847-rms10ic8mt0ceb1pe3tdseknlttiq9ov.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "707741483847-im8r090qp5nn97n2pq2cs136s07td2u3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myPortafolio"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707741483847:android:5be42e13b66f63dd250262",
+        "android_client_info": {
+          "package_name": "com.example.my_portafolio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707741483847-rms10ic8mt0ceb1pe3tdseknlttiq9ov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxv5Hr5jV8LV6vX4o9sCYIObFDAlIXcHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707741483847-rms10ic8mt0ceb1pe3tdseknlttiq9ov.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "707741483847-im8r090qp5nn97n2pq2cs136s07td2u3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myPortafolio"
+              }
+            }
+          ]
         }
       }
     }
