@@ -209,37 +209,39 @@ class _OtpScreenState extends State<OtpScreen> {
                                       print(
                                           "-------------${value.currentText.toString()}");
                                       // navigat();
-                                      try {
-                                        otpProvider.loading();
-                                        PhoneAuthCredential credential =
-                                            PhoneAuthProvider.credential(
-                                                verificationId: provider.otp,
-                                                smsCode: value.currentText
-                                                    .toString());
-                                        print(value.currentText.toString());
-                                        print(provider.otp);
-                                        await FirebaseAuth.instance
-                                            .signInWithCredential(credential)
-                                            .then(
-                                          (value) {
-                                            if (value.user == null) {
-                                              throw 'invalid OTP';
-                                            }
-                                            Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    HomeScreen(),
-                                              ),
-                                              (route) => false,
-                                            );
-                                            print(value.user!.phoneNumber);
-                                            print(value.user!.uid);
-                                          },
-                                        );
-                                      } catch (e) {
-                                        showSnackBar(context, e.toString());
-                                      }
+                                      // try {
+                                      //   otpProvider.loading();
+                                      //   PhoneAuthCredential credential =
+                                      //       PhoneAuthProvider.credential(
+                                      //           verificationId: provider.otp,
+                                      //           smsCode: value.currentText
+                                      //               .toString());
+                                      //   print(value.currentText.toString());
+                                      //   print(provider.otp);
+                                      //   await FirebaseAuth.instance
+                                      //       .signInWithCredential(credential)
+                                      //       .then(
+                                      //     (value) {
+                                      //       if (value.user == null) {
+                                      //         throw 'invalid OTP';
+                                      //       }
+                                      //       Navigator.pushAndRemoveUntil(
+                                      //         context,
+                                      //         MaterialPageRoute(
+                                      //           builder: (context) =>
+                                      //               HomeScreen(),
+                                      //         ),
+                                      //         (route) => false,
+                                      //       );
+                                      //       print(value.user!.phoneNumber);
+                                      //       print(value.user!.uid);
+                                      //     },
+                                      //   );
+                                      // } catch (e) {
+                                      //   showSnackBar(context, e.toString());
+                                      // }
+                                      value.otpValidate(
+                                          otp: provider.otp, context: context);
                                     },
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.black,

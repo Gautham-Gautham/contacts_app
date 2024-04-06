@@ -60,8 +60,8 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        // home: LoginScreen(),
-        home: HomeScreen(),
+        home: LoginScreen(),
+        // home: HomeScreen(),
       ),
     );
   }

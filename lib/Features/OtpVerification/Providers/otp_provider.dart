@@ -1,8 +1,12 @@
 import 'dart:async';
 
 import 'package:contacts_app/Features/Authentication/Provider/login_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../Core/SnackBar/snack_bar.dart';
+import '../../HomeScreen/Screens/home_screen.dart';
 import 'otp_model.dart';
 
 class OtpProvider extends ChangeNotifier {
@@ -34,5 +38,38 @@ class OtpProvider extends ChangeNotifier {
         }
       },
     );
+  }
+  otpValidate({required String otp,required BuildContext context}) async {
+    try {
+      loading();
+      PhoneAuthCredential credential =
+      PhoneAuthProvider.credential(
+          verificationId: otp,
+          smsCode: currentText
+              .toString());
+      print(currentText.toString());
+      print(otp);
+      await FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .then(
+            (value) {
+          if (value.user == null) {
+            throw 'invalid OTP';
+          }
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  HomeScreen(),
+            ),
+                (route) => false,
+          );
+          print(value.user!.phoneNumber);
+          print(value.user!.uid);
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
   }
 }

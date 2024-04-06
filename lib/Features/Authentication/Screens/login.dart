@@ -141,31 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () async {
                                   print(provider2.isLoading);
                                   // sendOtp(context: context, provider: provider);
-                                  if (provider
-                                          .model.phoneNumber.text.isNotEmpty &&
-                                      provider.model.phoneNumber.text.length ==
-                                          10) {
-                                    provider2.loading();
-                                    await FirebaseAuth.instance
-                                        .verifyPhoneNumber(
-                                            verificationCompleted:
-                                                (phoneAuthCredential) {},
-                                            verificationFailed: (error) {},
-                                            codeSent: (verificationId,
-                                                forceResendingToken) {
-                                              provider
-                                                  .navigateToOtpScreen(context);
-                                              provider.otp = verificationId;
-                                            },
-                                            codeAutoRetrievalTimeout:
-                                                (verificationId) {},
-                                            phoneNumber:
-                                                "+91${provider.model.phoneNumber.text}");
-                                    // provider.isLoading = false;
-                                  } else {
-                                    showSnackBar(context,
-                                        "Please Check The Mobile Number");
-                                  }
+                                  provider2.getOtp(context: context);
 
                                   // provider.navigateToOtpScreen(context);
                                   // Navigator.push(

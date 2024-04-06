@@ -245,13 +245,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       groupValue: homeProvider
                                                           .selectedValue,
                                                       onChanged: (value) {
-                                                        // setState(() {
-                                                        //   homeProvider
-                                                        //           .selectedValue =
-                                                        //       value!;
-                                                        //   Navigator.pop(
-                                                        //       context);
-                                                        // });
                                                         homeProvider
                                                             .changeValue(
                                                                 nbr: value!,
@@ -273,10 +266,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
                     Text(
                       "Users List",
                       style: GoogleFonts.poppins(
                           fontSize: width * 0.05, color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: height * 0.015,
                     ),
                     StreamBuilder(
                       stream: homeProvider.getUser(),
@@ -299,7 +298,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       minTileHeight: height * 0.1,
                                       leading: CircleAvatar(
                                         backgroundImage:
-                                            NetworkImage(currentUserNow.image),
+                                            currentUserNow.image == ""
+                                                ? const AssetImage(
+                                                    "assets/peakpx.jpg")
+                                                : NetworkImage(
+                                                    currentUserNow.image),
                                         radius: height * 0.04,
                                         // child: SvgPicture.asset("assets/Rectangle 88.svg"),
                                       ),
@@ -331,49 +334,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                       },
                     )
-
-                    // SizedBox(
-                    //     height: height * 0.77,
-                    //     child: ListView.builder(
-                    //       controller: scroll,
-                    //       scrollDirection: Axis.vertical,
-                    //       itemCount:
-                    //           isLoading ? allUsers.length + 1 : allUsers.length,
-                    //       itemBuilder: (context, index) {
-                    //         if (index == allUsers.length) {
-                    //           return const Center(
-                    //               child: CircularProgressIndicator(
-                    //             color: Colors.black,
-                    //           ));
-                    //         }
-                    //         final currentUserNow = allUsers[index];
-                    //         return Card(
-                    //           color: Colors.white,
-                    //           child: ListTile(
-                    //             // tileColor: Colors.transparent,
-                    //             minTileHeight: height * 0.1,
-                    //             leading: CircleAvatar(
-                    //               backgroundImage:
-                    //                   NetworkImage(currentUserNow.image),
-                    //               radius: height * 0.04,
-                    //               // child: SvgPicture.asset("assets/Rectangle 88.svg"),
-                    //             ),
-                    //             title: Text(
-                    //               currentUserNow.name,
-                    //               style: GoogleFonts.poppins(
-                    //                   fontSize: width * 0.05,
-                    //                   fontWeight: FontWeight.w500),
-                    //             ),
-                    //             subtitle: Text(
-                    //               "Age :${currentUserNow.age}",
-                    //               style: GoogleFonts.poppins(
-                    //                   fontSize: width * 0.04,
-                    //                   fontWeight: FontWeight.w500),
-                    //             ),
-                    //           ),
-                    //         );
-                    //       },
-                    //     ))
                   ],
                 ),
               ),
