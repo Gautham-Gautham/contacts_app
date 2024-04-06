@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:contacts_app/Core/SnackBar/snack_bar.dart';
 import 'package:contacts_app/Core/common/CustomeKeypad&Button/key_pad.dart';
 import 'package:contacts_app/Core/custom_textform_field/custom_textform.dart';
 import 'package:contacts_app/Features/Authentication/Screens/login.dart';
@@ -9,10 +10,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+// import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
 import '../../Authentication/Provider/login_provider.dart';
+import '../../HomeScreen/Screens/home_screen.dart';
 
 class OtpScreen extends StatefulWidget {
   final String number;
@@ -61,10 +65,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(
-                            "assets/otp.svg",
-                            height: height * 0.2,
-                          ),
+                          Lottie.asset("assets/otp.json", height: height * 0.2)
                         ],
                       ),
                       Padding(
@@ -114,6 +115,14 @@ class _OtpScreenState extends State<OtpScreen> {
                             SizedBox(
                               height: height * 0.02,
                             ),
+                            // Container(
+                            //     height: height * 0.07,
+                            //     width: width,
+                            //     // color: Colors.white,
+                            //     child: Pinput(
+                            //       length: 6,
+                            //       controller: value.otpModel.fth,
+                            //     )),
                             Container(
                               height: height * 0.07,
                               width: width,
@@ -186,116 +195,67 @@ class _OtpScreenState extends State<OtpScreen> {
                       SizedBox(
                         height: height * 0.01,
                       ),
-                      Center(
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              // navigat();
-                              PhoneAuthCredential credential =
-                                  await PhoneAuthProvider.credential(
-                                      verificationId: provider.otp,
-                                      smsCode: value.currentText.toString());
-                              FirebaseAuth.instance
-                                  .signInWithCredential(credential)
-                                  .then(
-                                (value) {
-                                  print(value.user!.phoneNumber);
-                                  print(value.user!.uid);
-                                },
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                                minimumSize: Size(width * 0.8, height * 0.06)),
-                            child: Text(
-                              'Verify OTP',
-                              style: GoogleFonts.poppins(
-                                  fontSize: width * 0.05,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500),
-                              textAlign: TextAlign.center,
-                            )),
-                      ),
-
-                      // FlutterOtpField(
-                      //   inputFieldLength: 4,
-                      //   spaceBetweenFields: 10,
-                      //   onValueChange: (String value) {
-                      //     print("otp changed $value");
-                      //   },
-                      //   onCompleted: (String value) {
-                      //     print("otp  $value");
-                      //   },
-                      // ),
-
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //   children: [
-                      //     SizedBox(
-                      //       width: width * 0.15,
-                      //       height: height * 0.07,
-                      //       // color: Colors.red,
-                      //       // decoration: BoxDecoration(
-                      //       //   borderRadius: BorderRadius.circular(10),
-                      //       //   color: Colors.red,
-                      //       // ),
-                      //       child: CustomTextField(
-                      //           focusNode: focusNode1,
-                      //           onChanged: (p0) {
-                      //             if (p0.length == 1) {
-                      //               // Move focus to the next text field when one digit is entered
-                      //               FocusScope.of(context).requestFocus(focusNode2);
-                      //             }
-                      //           },
-                      //           keyboardType: TextInputType.none,
-                      //           controller: fst,
-                      //           label: ''),
-                      //     ),
-                      //     SizedBox(
-                      //       width: width * 0.15,
-                      //       height: height * 0.07,
-                      //       // color: Colors.red,
-                      //       // decoration: BoxDecoration(
-                      //       //   borderRadius: BorderRadius.circular(10),
-                      //       //   color: Colors.red,
-                      //       // ),
-                      //       child: CustomTextField(
-                      //           keyboardType: TextInputType.none,
-                      //           controller: snd,
-                      //           label: ''),
-                      //     ),
-                      //     SizedBox(
-                      //       width: width * 0.15,
-                      //       height: height * 0.07,
-                      //       // color: Colors.red,
-                      //       // decoration: BoxDecoration(
-                      //       //   borderRadius: BorderRadius.circular(10),
-                      //       //   color: Colors.red,
-                      //       // ),
-                      //       child: CustomTextField(
-                      //           keyboardType: TextInputType.none,
-                      //           controller: trd,
-                      //           label: ''),
-                      //     ),
-                      //     SizedBox(
-                      //       width: width * 0.15,
-                      //       height: height * 0.07,
-                      //       // color: Colors.red,
-                      //       // decoration: BoxDecoration(
-                      //       //   borderRadius: BorderRadius.circular(10),
-                      //       //   color: Colors.red,
-                      //       // ),
-                      //       child: CustomTextField(
-                      //           keyboardType: TextInputType.none,
-                      //           controller: fth,
-                      //           label: ''),
-                      //     ),
-                      //   ],
-                      // ),
-                      //
-                      // NumPad(
-                      //   buttonColor: Colors.white,
-                      //   controller: nbrs,
-                      // )
+                      Consumer<OtpProvider>(
+                        builder: (context, otpProvider, child) {
+                          return Center(
+                            child: otpProvider.isLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.black,
+                                  )
+                                : ElevatedButton(
+                                    onPressed: () async {
+                                      print(
+                                          '---------${value.otpModel.fth.text.toString()}');
+                                      print(
+                                          "-------------${value.currentText.toString()}");
+                                      // navigat();
+                                      try {
+                                        otpProvider.loading();
+                                        PhoneAuthCredential credential =
+                                            PhoneAuthProvider.credential(
+                                                verificationId: provider.otp,
+                                                smsCode: value.currentText
+                                                    .toString());
+                                        print(value.currentText.toString());
+                                        print(provider.otp);
+                                        await FirebaseAuth.instance
+                                            .signInWithCredential(credential)
+                                            .then(
+                                          (value) {
+                                            if (value.user == null) {
+                                              throw 'invalid OTP';
+                                            }
+                                            Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomeScreen(),
+                                              ),
+                                              (route) => false,
+                                            );
+                                            print(value.user!.phoneNumber);
+                                            print(value.user!.uid);
+                                          },
+                                        );
+                                      } catch (e) {
+                                        showSnackBar(context, e.toString());
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.black,
+                                        minimumSize:
+                                            Size(width * 0.8, height * 0.06)),
+                                    child: Text(
+                                      'Verify OTP',
+                                      style: GoogleFonts.poppins(
+                                          fontSize: width * 0.05,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500),
+                                      textAlign: TextAlign.center,
+                                    )),
+                          );
+                        },
+                      )
                     ],
                   );
                 },

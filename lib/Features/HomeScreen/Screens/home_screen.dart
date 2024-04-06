@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 import '../../../Models/userModel.dart';
@@ -20,36 +21,81 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final PagingController _pagingController = PagingController(firstPageKey: 0);
   bool isLoading = false;
   List<UserModel> allUsers = [];
   final ScrollController scroll = ScrollController();
-  Future<void> lazzyLoading() async {
-    await Future.delayed(
-      Duration(seconds: 1),
-      () async {
-        setState(() {
-          isLoading = false;
-        });
-        final res = await FirebaseFirestore.instance
-            .collection(FirebaseConstants.userCollection)
-            .get();
-        for (var i in res.docs) {
-          final asjdjn = UserModel.fromMap(i.data());
-          allUsers.add(asjdjn);
-        }
-      },
+  // Future<void> lazzyLoading() async {
+  //   await Future.delayed(
+  //     Duration(seconds: 1),
+  //     () async {
+  //       setState(() {
+  //         isLoading = false;
+  //       });
+  //       final res = await FirebaseFirestore.instance
+  //           .collection(FirebaseConstants.userCollection)
+  //           .get();
+  //       for (var i in res.docs) {
+  //         final asjdjn = UserModel.fromMap(i.data());
+  //         allUsers.add(asjdjn);
+  //       }
+  //     },
+  //   );
+  // }
+
+  QueryDocumentSnapshot? lastDocument;
+
+  getData() {
+    if (lastDocument == null) {
+      FirebaseFirestore.instance.collection('name').limit(10).get().then(
+        (value) {
+          lastDocument = value.docs.last;
+          for (var i in value.docs) {
+            allUsers.add(UserModel.fromMap(i.data()));
+          }
+        },
+      );
+    } else {
+      FirebaseFirestore.instance
+          .collection('name')
+          .startAfterDocument(lastDocument!)
+          .limit(10)
+          .get()
+          .then(
+        (value) {
+          for (var i in value.docs) {
+            allUsers.add(UserModel.fromMap(i.data()));
+          }
+        },
+      );
+    }
+    allUsers.sort(
+      (a, b) => a.age.compareTo(b.age),
     );
+    isLoading = false;
   }
 
+  // @override
+  // void initState() {
+  //   _pagingController.addPageRequestListener((pageKey) {
+  //     _fetchPage(pageKey);
+  //   });
+  //   super.initState();
+  // }
   @override
   void initState() {
+    getData();
     scroll.addListener(
       () {
         if (scroll.offset >= scroll.position.maxScrollExtent) {
-          setState(() {
-            isLoading = true;
-          });
-          lazzyLoading();
+          isLoading = true;
+
+          Future.delayed(
+            Duration(seconds: 3),
+            () {
+              getData();
+            },
+          );
           print("object");
         }
       },
@@ -235,6 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     StreamBuilder(
                       stream: homeProvider.getUser(),
                       builder: (context, snapshot) {
+                        // print();
                         if (snapshot.hasData) {
                           List<UserModel> users = snapshot.data!;
                           return SizedBox(
@@ -272,16 +319,61 @@ class _HomeScreenState extends State<HomeScreen> {
                                   );
                                 },
                               ));
-                        } else if (snapshot.hasError) {
-                          print("object");
-                          return const Center(
-                            child: Text("data"),
-                          );
-                        } else {
+                        }
+                        // else if (snapshot.hasError) {
+                        //   print("object");
+                        //   return const Center(
+                        //     child: Text("data"),
+                        //   );
+                        // }
+                        else {
                           return const CircularProgressIndicator();
                         }
                       },
                     )
+
+                    // SizedBox(
+                    //     height: height * 0.77,
+                    //     child: ListView.builder(
+                    //       controller: scroll,
+                    //       scrollDirection: Axis.vertical,
+                    //       itemCount:
+                    //           isLoading ? allUsers.length + 1 : allUsers.length,
+                    //       itemBuilder: (context, index) {
+                    //         if (index == allUsers.length) {
+                    //           return const Center(
+                    //               child: CircularProgressIndicator(
+                    //             color: Colors.black,
+                    //           ));
+                    //         }
+                    //         final currentUserNow = allUsers[index];
+                    //         return Card(
+                    //           color: Colors.white,
+                    //           child: ListTile(
+                    //             // tileColor: Colors.transparent,
+                    //             minTileHeight: height * 0.1,
+                    //             leading: CircleAvatar(
+                    //               backgroundImage:
+                    //                   NetworkImage(currentUserNow.image),
+                    //               radius: height * 0.04,
+                    //               // child: SvgPicture.asset("assets/Rectangle 88.svg"),
+                    //             ),
+                    //             title: Text(
+                    //               currentUserNow.name,
+                    //               style: GoogleFonts.poppins(
+                    //                   fontSize: width * 0.05,
+                    //                   fontWeight: FontWeight.w500),
+                    //             ),
+                    //             subtitle: Text(
+                    //               "Age :${currentUserNow.age}",
+                    //               style: GoogleFonts.poppins(
+                    //                   fontSize: width * 0.04,
+                    //                   fontWeight: FontWeight.w500),
+                    //             ),
+                    //           ),
+                    //         );
+                    //       },
+                    //     ))
                   ],
                 ),
               ),

@@ -8,6 +8,11 @@ class LoginProvider extends ChangeNotifier {
   final LoginModel _model = LoginModel();
   String otp = '';
   LoginModel get model => _model;
+  bool isLoading = false;
+  loading() {
+    isLoading = !isLoading;
+    notifyListeners();
+  }
 
   void navigateToOtpScreen(BuildContext context) {
     Navigator.push(
