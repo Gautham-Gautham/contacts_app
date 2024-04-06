@@ -18,6 +18,7 @@ class HomeProvider extends ChangeNotifier {
               arrayContains: homeModel.search.text.isEmpty
                   ? null
                   : homeModel.search.text.toUpperCase().trim())
+          .orderBy("age", descending: false)
           .snapshots()
           .map(
             (event) => event.docs
@@ -34,6 +35,7 @@ class HomeProvider extends ChangeNotifier {
                   ? null
                   : homeModel.search.text.toUpperCase().trim())
           .where('age', isGreaterThanOrEqualTo: 60)
+          .orderBy("age", descending: false)
           .snapshots()
           .map(
             (event) => event.docs
@@ -50,6 +52,7 @@ class HomeProvider extends ChangeNotifier {
                   ? null
                   : homeModel.search.text.toUpperCase().trim())
           .where('age', isLessThan: 60)
+          .orderBy("age", descending: false)
           .snapshots()
           .map(
             (event) => event.docs
