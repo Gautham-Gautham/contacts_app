@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_app/Core/Constants/firebase_constants.dart';
 import 'package:contacts_app/Core/custom_textform_field/custom_textform.dart';
@@ -25,25 +27,288 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
   List<UserModel> allUsers = [];
   final ScrollController scroll = ScrollController();
-  // Future<void> lazzyLoading() async {
-  //   await Future.delayed(
-  //     Duration(seconds: 1),
-  //     () async {
-  //       setState(() {
-  //         isLoading = false;
-  //       });
-  //       final res = await FirebaseFirestore.instance
-  //           .collection(FirebaseConstants.userCollection)
-  //           .get();
-  //       for (var i in res.docs) {
-  //         final asjdjn = UserModel.fromMap(i.data());
-  //         allUsers.add(asjdjn);
-  //       }
-  //     },
-  //   );
-  // }
 
   QueryDocumentSnapshot? lastDocument;
+  // Future<StreamSubscription<QuerySnapshot<Map<String, dynamic>>>>
+  //     getInitialUsers(
+  //         {required String search, required String ageFilter}) async {
+  //   try {
+  //     print(search);
+  //     print(
+  //         "Sssssssssseeeeeeeaaaaaaaaaaaaaarrrrrrrrrrrrrrrrrrccccccccccccccchhhhhhhhhhhhhhhhhhhhh");
+  //     if (search.isEmpty) {
+  //       if (ageFilter == "Younger") {
+  //         print("1111111111111111111111111111");
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .where("age", isLessThan: 60)
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       } else if (ageFilter == "Elder") {
+  //         print("22222222222222222222222");
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .where("age", isGreaterThanOrEqualTo: 60)
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       } else {
+  //         print("33333333333333333333333333333");
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       }
+  //     } else {
+  //       if (ageFilter == "Younger") {
+  //         print("44444444444444444444444444444444444");
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .where("age", isLessThan: 60)
+  //             .where("search", arrayContains: search.toUpperCase())
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       } else if (ageFilter == "Elder") {
+  //         print("555555555555555555555555555555");
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .where("age", isGreaterThanOrEqualTo: 60)
+  //             .where("search", arrayContains: search.toUpperCase())
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       } else {
+  //         print("6666666666666666666666666666666");
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .where("search", arrayContains: search.toUpperCase())
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       }
+  //     }
+  //   } on FirebaseException catch (e) {
+  //     throw ServerException(message: e.toString());
+  //   } catch (e) {
+  //     throw ServerException(message: e.toString());
+  //   }
+  // }
+  //
+  // @override
+  // Future<StreamSubscription<QuerySnapshot<Map<String, dynamic>>>> getNextUsers(
+  //     {required String search,
+  //     required String ageFilter,
+  //     required lastDoc}) async {
+  //   try {
+  //     if (search.isEmpty) {
+  //       if (ageFilter == "Younger") {
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .where("age", isLessThan: 60)
+  //             .startAfterDocument(lastDoc)
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       } else if (ageFilter == "Elder") {
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .where("age", isGreaterThanOrEqualTo: 60)
+  //             .startAfterDocument(lastDoc)
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       } else {
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .startAfterDocument(lastDoc)
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       }
+  //     } else {
+  //       if (ageFilter == "Younger") {
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .where("age", isLessThan: 60)
+  //             .where("search", arrayContains: search.toUpperCase())
+  //             .startAfterDocument(lastDoc)
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       } else if (ageFilter == "Elder") {
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .where("age", isGreaterThanOrEqualTo: 60)
+  //             .where("search", arrayContains: search.toUpperCase())
+  //             .startAfterDocument(lastDoc)
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       } else {
+  //         return firestore
+  //             .collection(FirebaseConstants.userCollection)
+  //             .where("search", arrayContains: search.toUpperCase())
+  //             .startAfterDocument(lastDoc)
+  //             .limit(limit)
+  //             .snapshots()
+  //             .listen((event) {});
+  //       }
+  //     }
+  //   } on FirebaseException catch (e) {
+  //     throw ServerException(message: e.toString());
+  //   } catch (e) {
+  //     throw ServerException(message: e.toString());
+  //   }
+  // }
+
+  // getData() async {
+  //   try {
+  //     if (lastDocument == null) {
+  //       print("working");
+  //       final d = await FirebaseFirestore.instance.collection('name').get();
+  //       lastDocument = d.docs.last;
+  //       for (var i in d.docs) {
+  //         allUsers.add(UserModel.fromMap(i.data()));
+  //       }
+  //       // then(
+  //       //   (value) {
+  //       //     lastDocument = value.docs.last;
+  //       //     for (var i in value.docs) {
+  //       //       allUsers.add(UserModel.fromMap(i.data()));
+  //       //     }
+  //       //   },
+  //       // );
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print(allUsers.length);
+  //       print("working2");
+  //     } else {
+  //       print("else");
+  //       FirebaseFirestore.instance
+  //           .collection('name')
+  //           .startAfterDocument(lastDocument!)
+  //           .limit(10)
+  //           .get()
+  //           .then(
+  //         (value) {
+  //           for (var i in value.docs) {
+  //             allUsers.add(UserModel.fromMap(i.data()));
+  //           }
+  //         },
+  //       );
+  //       print("else2");
+  //     }
+  //     allUsers.sort(
+  //       (a, b) => a.age.compareTo(b.age),
+  //     );
+  //     isLoading = false;
+  //   } catch (e) {
+  //     print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+  //     print(e.toString());
+  //     print(e.toString());
+  //     print(e.toString());
+  //     print(e.toString());
+  //     print(e.toString());
+  //     print(e.toString());
+  //     print(e.toString());
+  //   }
+  // }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // getData();
+    getInitialUsers(search: '', ageFilter: 1);
+  }
+
+  Future<StreamSubscription<QuerySnapshot<Map<String, dynamic>>>>
+      getInitialUsers({required String search, required int ageFilter}) async {
+    try {
+      print(search);
+      print(
+          "Sssssssssseeeeeeeaaaaaaaaaaaaaarrrrrrrrrrrrrrrrrrccccccccccccccchhhhhhhhhhhhhhhhhhhhh");
+      if (search.isEmpty) {
+        if (ageFilter == 3) {
+          print("1111111111111111111111111111");
+          return FirebaseFirestore.instance
+              .collection(FirebaseConstants.userCollection)
+              .where("age", isLessThan: 60)
+              .limit(10)
+              .snapshots()
+              .listen((event) {});
+        } else if (ageFilter == 2) {
+          print("22222222222222222222222");
+          return FirebaseFirestore.instance
+              .collection(FirebaseConstants.userCollection)
+              .where("age", isGreaterThanOrEqualTo: 60)
+              .limit(10)
+              .snapshots()
+              .listen((event) {});
+        } else {
+          print("33333333333333333333333333333");
+          return FirebaseFirestore.instance
+              .collection(FirebaseConstants.userCollection)
+              .limit(10)
+              .snapshots()
+              .listen((event) {});
+        }
+      } else {
+        if (ageFilter == "Younger") {
+          print("44444444444444444444444444444444444");
+          return FirebaseFirestore.instance
+              .collection(FirebaseConstants.userCollection)
+              .where("age", isLessThan: 60)
+              .where("search", arrayContains: search.toUpperCase())
+              .limit(10)
+              .snapshots()
+              .listen((event) {});
+        } else if (ageFilter == "Elder") {
+          print("555555555555555555555555555555");
+          return FirebaseFirestore.instance
+              .collection(FirebaseConstants.userCollection)
+              .where("age", isGreaterThanOrEqualTo: 60)
+              .where("search", arrayContains: search.toUpperCase())
+              .limit(10)
+              .snapshots()
+              .listen((event) {});
+        } else {
+          print("6666666666666666666666666666666");
+          return FirebaseFirestore.instance
+              .collection(FirebaseConstants.userCollection)
+              .where("search", arrayContains: search.toUpperCase())
+              .limit(10)
+              .snapshots()
+              .listen((event) {});
+        }
+      }
+    } on FirebaseException catch (e) {
+      throw e.message!;
+      // throw ServerException(message: e.toString());
+    } catch (e) {
+      print(e.toString());
+      throw e.toString();
+      // throw ServerException(message: e.toString());
+    }
+  }
 
   getData() {
     if (lastDocument == null) {
@@ -82,26 +347,6 @@ class _HomeScreenState extends State<HomeScreen> {
   //   });
   //   super.initState();
   // }
-  @override
-  void initState() {
-    getData();
-    scroll.addListener(
-      () {
-        if (scroll.offset >= scroll.position.maxScrollExtent) {
-          isLoading = true;
-
-          Future.delayed(
-            Duration(seconds: 3),
-            () {
-              getData();
-            },
-          );
-          print("object");
-        }
-      },
-    );
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -291,6 +536,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemCount: users.length,
                                 itemBuilder: (context, index) {
                                   final currentUserNow = users[index];
+
                                   return Card(
                                     color: Colors.white,
                                     child: ListTile(

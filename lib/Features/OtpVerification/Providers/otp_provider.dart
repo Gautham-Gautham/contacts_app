@@ -39,31 +39,23 @@ class OtpProvider extends ChangeNotifier {
       },
     );
   }
-  otpValidate({required String otp,required BuildContext context}) async {
+
+  otpValidate(
+      {required String otp,
+      required BuildContext context,
+      required void Function() success}) async {
     try {
       loading();
-      PhoneAuthCredential credential =
-      PhoneAuthProvider.credential(
-          verificationId: otp,
-          smsCode: currentText
-              .toString());
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: otp, smsCode: currentText.toString());
       print(currentText.toString());
       print(otp);
-      await FirebaseAuth.instance
-          .signInWithCredential(credential)
-          .then(
-            (value) {
+      await FirebaseAuth.instance.signInWithCredential(credential).then(
+        (value) {
           if (value.user == null) {
             throw 'invalid OTP';
           }
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  HomeScreen(),
-            ),
-                (route) => false,
-          );
+          success();
           print(value.user!.phoneNumber);
           print(value.user!.uid);
         },

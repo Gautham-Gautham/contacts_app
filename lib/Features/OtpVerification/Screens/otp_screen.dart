@@ -241,7 +241,18 @@ class _OtpScreenState extends State<OtpScreen> {
                                       //   showSnackBar(context, e.toString());
                                       // }
                                       value.otpValidate(
-                                          otp: provider.otp, context: context);
+                                          otp: provider.otp,
+                                          context: context,
+                                          success: () {
+                                            Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomeScreen(),
+                                              ),
+                                              (route) => false,
+                                            );
+                                          });
                                     },
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.black,

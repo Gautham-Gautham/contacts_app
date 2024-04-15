@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Features/Authentication/Provider/login_provider.dart';
+import 'Features/HomeScreen/Provider/hom_two_provider.dart';
+import 'Features/HomeScreen/Screens/homescreen2.dart';
 import 'Features/OtpVerification/Providers/otp_provider.dart';
 import 'firebase_options.dart';
 
@@ -52,6 +54,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CreateUserProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => HomTwoProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -62,6 +67,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: LoginScreen(),
         // home: HomeScreen(),
+        // home: Homescreen2(),
       ),
     );
   }
